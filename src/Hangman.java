@@ -7,31 +7,64 @@ import java.util.Scanner;
 
 public class Hangman {
     public static void main(String[] args) throws FileNotFoundException {
-        Scanner in = new Scanner(new File("C:\\Users\\Boom\\Documents\\java\\Hangman\\src\\cities.txt"));
         Scanner keyboard = new Scanner(System.in);
-        List<String> words = new ArrayList<>();
+        String word;
+        System.out.print("Choose single or multiplayer(1or2): ");
+        Scanner name=new Scanner(System.in);
+        int players=name.nextInt();
+        String player1="";
+        String player="";
+        String player2="";
 
-        //picking random word
-        while (in.hasNext()) {
-            words.add(in.nextLine());
+        while (true) {
+            if (players == 2) {
+                System.out.print("Enter player 1 name: ");
+                player1 = name.next();
+                System.out.print("Enter player 2 name: ");
+                player2 = name.next();
+                player=player1;
+                break;
+            } else if (players == 1) {break;
+            } else {
+                System.out.print("Invalid input, try again: ");
+                players = name.nextInt();
+            }
         }
-        Random rand = new Random();
-        String word = words.get(rand.nextInt(words.size()));
+
+
+
+        Scanner in = new Scanner(new File("C:\\Users\\Boom\\Documents\\java\\Hangman\\src\\cities.txt"));
+
+            List<String> words = new ArrayList<>();
+
+            //picking random word
+            while (in.hasNext()) {
+                words.add(in.nextLine());
+            }
+            Random rand = new Random();
+            word = words.get(rand.nextInt(words.size()));
+
+
         List<Character> playerGuess = new ArrayList<>();
         printWordState(word, playerGuess);
         int wrongCount = 0;
         while (true) {
             printHangManState(wrongCount);
             if (wrongCount >= 6) {
-                System.out.println("You lose");
+                System.out.println("You lose!");
+                System.out.println("The word was: "+word);
                 break;
             }
-            if (!inputPlayerGuess(keyboard, word, playerGuess)) {
+            if (!inputPlayerGuess(keyboard, word, playerGuess,player)) {           //hmm
                 wrongCount++;
+                player=player2;
+                player2=player1;
+                player1=player;
+
             }
 
             if (printWordState(word, playerGuess)) {
-                System.out.println("you win");
+                System.out.println(player+" "+"You win!");
                 break;
             }
         }
@@ -84,12 +117,12 @@ public class Hangman {
         }
     }
 
-    private static boolean inputPlayerGuess(Scanner keyboard, String word, List<Character> playerGuess) {
-        System.out.print("please enter a letter: ");
+    private static boolean inputPlayerGuess(Scanner keyboard, String word, List<Character> playerGuess,String player) {
+        System.out.print(player+" please enter a letter: ");
         String letterGuess = keyboard.nextLine();
         //check for valid input
         while (letterGuess.length() != 1 || Character.isDigit(letterGuess.charAt(0))) {
-            System.out.println("invalid input, try again");
+            System.out.println("Invalid input, try again");
             letterGuess = keyboard.next();
         }
         playerGuess.add(letterGuess.charAt(0));
