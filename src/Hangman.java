@@ -44,18 +44,40 @@ public class Hangman {
         Random rand = new Random();
         city = words.get(rand.nextInt(words.size()));
 
-
         List<Character> playerGuess = new ArrayList<>();
         printWordState(city, playerGuess);
+
+        String chooseToContinue;
         int wrongCount = 0;
         while (true) {
             printHangManState(wrongCount);
             if (wrongCount >= 6) {
                 System.out.println("You lose!");
                 System.out.println("The city was: " + city);
-                break;
+                if (players == 2) {
+                    System.out.println("would you like another game: ");
+                    chooseToContinue = name.next();
+                    if (chooseToContinue.equals("n")) {
+                        break;
+                    } else if (chooseToContinue.equals("y")) {
+                        wrongCount = 0;
+
+                    } else {
+                        //invalid input check
+                        while (!chooseToContinue.equals("n") && !chooseToContinue.equals("y")) {
+                            System.out.println("Invalid input(choose y or n): ");
+                            chooseToContinue = name.next();
+                        }
+                    }
+                }
+                if (players == 1) {
+                    break;
+                }
             }
-            if (!inputPlayerGuess(keyboard, city, playerGuess, player)) {           //hmm
+
+
+            //changing players
+            if (!inputPlayerGuess(keyboard, city, playerGuess, player)) {
                 wrongCount++;
                 player = player2;
                 player2 = player1;
@@ -63,8 +85,13 @@ public class Hangman {
 
             }
 
+//            int points = 0;
+//            int newPoints = 0;
+
             if (printWordState(city, playerGuess)) {
                 System.out.println(player + " " + "You win!");
+
+
                 break;
             }
         }
@@ -121,6 +148,8 @@ public class Hangman {
         System.out.print(player + " please enter a letter: ");
         String letterGuess = keyboard.nextLine();
         //check for valid input
+
+
         while (letterGuess.length() != 1 || Character.isDigit(letterGuess.charAt(0))) {
             System.out.println("Invalid input, try again");
             letterGuess = keyboard.nextLine();
