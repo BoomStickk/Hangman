@@ -17,18 +17,17 @@ public class Hangman {
         String player2 = "";
 
         while (true) {
-            if (players == 2) {
+            if (players == 2) {                                                 //choosing names
                 System.out.print("Enter player 1 name: ");
                 player1 = sc.next();
                 System.out.print("Enter player 2 name: ");
                 player2 = sc.next();
-
-                player = player1;
-                while (true){
-                    if(player2.equals(player1)){
+                player = player1;                                              //player 1 starts the game
+                while (true) {
+                    if (player2.equals(player1)) {                             //check for same name
                         System.out.println("Enter another name: ");
-                        player2=sc.next();
-                    }else {
+                        player2 = sc.next();
+                    } else {
                         break;
                     }
                 }
@@ -36,47 +35,39 @@ public class Hangman {
             } else if (players == 1) {
                 break;
             } else {
-                System.out.print("Invalid input, try again: ");
+                System.out.print("Invalid input, try again: ");                   //check for 1 or 2 players
                 players = sc.nextInt();
             }
         }
-
-
-        Scanner in = new Scanner(new File("C:\\Users\\Boom\\Documents\\java\\Hangman\\src\\cities.txt"));
-
+        Scanner in = new Scanner(new File("C:\\Users\\Boom\\Documents\\java\\Hangman\\src\\cities.txt"));//dictionary
         List<String> words = new ArrayList<>();
-
-        //picking random word
-        city = getRandomWord(in, words);
-
-        List<Character> playerGuess = new ArrayList<>();
-        printWordState(city, playerGuess);
-
+        city = getRandomWord(in, words);                                           //picking random word
+        List<Character> playerGuesses = new ArrayList<>();                           //chosen letters
+        printWordState(city, playerGuesses);
         String chooseToContinue;
         int wrongCount = 0;
         int points1 = 0;
         int points2 = 0;
         while (true) {
             printHangManState(wrongCount);
-            if (wrongCount >= 6) {
+            if (wrongCount >= 6) {                                                  //loosing condition
                 System.out.println("You lose!");
                 System.out.println("The city was: " + city);
-                if (players == 2) {
+                if (players == 2) {                                                  //choosing to continue
                     System.out.print("would you like another game: ");
                     chooseToContinue = sc.next();
                     if (chooseToContinue.equals("n")) {
-                        System.out.println("SCORE: \n" + player1 + " = " + points1 + "  " + player2 + " = " + points2);
+                        System.out.println("FINAL SCORE: \n" + player1 + " = " + points1 + "  " + player2 + " = " + points2);
                         break;
                     } else if (chooseToContinue.equals("y")) {
                         wrongCount = 0;
                         city = getRandomWord(in, words);
-                        playerGuess.clear();
-
+                        playerGuesses.clear();
                     } else {
                         //invalid input check
                         while ((!chooseToContinue.equals("n") && !chooseToContinue.equals("y")) || Character.isDigit(chooseToContinue.charAt(0))) {
                             System.out.print("Invalid input(choose y or n): ");
-                            playerGuess.clear();
+                            playerGuesses.clear();
                             wrongCount = 0;
                             chooseToContinue = sc.next();
                         }
@@ -86,48 +77,38 @@ public class Hangman {
                     break;
                 }
             }
-
-            //changing players
-            if (!inputPlayerGuess(keyboard, city, playerGuess, player)) {
+            //changing players & counting errors
+            if (!inputPlayerGuess(keyboard, city, playerGuesses, player)) {
                 wrongCount++;
-                if(player.equals(player1)){
-                    player=player2;
+                if (player.equals(player1)) {
+                    player = player2;
                 } else {
-                    player=player1;
-
+                    player = player1;
                 }
-
             }
-
-
-            if (printWordState(city, playerGuess)) {
+            if (printWordState(city, playerGuesses)) {                          //winning condition,distributing points
                 System.out.println(player + " " + "You win!");
-                if(player.equals(player1)){
+                if (player.equals(player1)) {
                     points1++;
                 } else {
                     points2++;
-
                 }
-
-
                 if (players == 2) {
                     System.out.print("would you like another game(y or n): ");
                     chooseToContinue = sc.next();
                     if (chooseToContinue.equals("n")) {
-                        System.out.println("SCORE: \n" + player1 + " = " + points1 + "  " + player2 + " = " + points2);  //there
+                        System.out.println("FINAL SCORE: \n" + player1 + " = " + points1 + "  " + player2 + " = " + points2);
                         break;
                     } else if (chooseToContinue.equals("y")) {
                         wrongCount = 0;
                         city = getRandomWord(in, words);
-                        playerGuess.clear();
-
-
+                        playerGuesses.clear();
                     } else {
                         //invalid input check
                         while ((!chooseToContinue.equals("n") && !chooseToContinue.equals("y")) || Character.isDigit(chooseToContinue.charAt(0))) {
                             System.out.print("Invalid input(choose y or n): ");
                             chooseToContinue = sc.next();
-                            playerGuess.clear();
+                            playerGuesses.clear();
                             wrongCount = 0;
                         }
                     }
@@ -138,7 +119,6 @@ public class Hangman {
             }
         }
     }
-
     private static String getRandomWord(Scanner in, List<String> words) {
         String city;
         while (in.hasNext()) {
@@ -148,8 +128,6 @@ public class Hangman {
         city = words.get(rand.nextInt(words.size()));
         return city;
     }
-
-
     private static void printHangManState(int wrongCount) {
         if (wrongCount == 1) {
             System.out.println("|-------");
@@ -157,36 +135,30 @@ public class Hangman {
             System.out.println("|");
             System.out.println("|");
             System.out.println("|");
-
-
         } else if (wrongCount == 2) {
             System.out.println("|-------");
             System.out.println("|    O");
             System.out.println("|    |");
             System.out.println("|");
             System.out.println("|");
-
         } else if (wrongCount == 3) {
             System.out.println("|-------");
             System.out.println("|    O");
             System.out.println("|   -|");
             System.out.println("|");
             System.out.println("|");
-
         } else if (wrongCount == 4) {
             System.out.println("|-------");
             System.out.println("|    O");
             System.out.println("|   -|-");
             System.out.println("|");
             System.out.println("|");
-
         } else if (wrongCount == 5) {
             System.out.println("|-------");
             System.out.println("|    O");
             System.out.println("|   -|-");
             System.out.println("|   /");
             System.out.println("|");
-
         } else if (wrongCount == 6) {
             System.out.println("|-------");
             System.out.println("|    O");
@@ -195,23 +167,18 @@ public class Hangman {
             System.out.println("|");
         }
     }
-
     private static boolean inputPlayerGuess(Scanner keyboard, String word, List<Character> playerGuess, String player) {
         System.out.println("=====================================");
         System.out.print(player + " please enter a letter: ");
-        String letterGuess = keyboard.nextLine();
-
+        String letterGuesses = keyboard.nextLine();
         //check for valid input
-
-        while (letterGuess.length() != 1 || Character.isDigit(letterGuess.charAt(0))) {
+        while (letterGuesses.length() != 1 || Character.isDigit(letterGuesses.charAt(0))) {
             System.out.println("Invalid input, try again");
-            letterGuess = keyboard.nextLine();
+            letterGuesses = keyboard.nextLine();
         }
-        playerGuess.add(letterGuess.charAt(0));
-        return word.contains(letterGuess);
-
+        playerGuess.add(letterGuesses.charAt(0));
+        return word.contains(letterGuesses);
     }
-
     private static boolean printWordState(String word, List<Character> playerGuess) {
         int correctCount = 0;
         for (int i = 0; i < word.length(); i++) {
