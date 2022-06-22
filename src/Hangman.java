@@ -56,16 +56,16 @@ public class Hangman {
                 if (players == 2) {                                                  //choosing to continue
                     System.out.print("would you like another game: ");
                     chooseToContinue = sc.next();
-                    if (chooseToContinue.equals("n")) {
+                    if (chooseToContinue.equalsIgnoreCase("n")) {
                         System.out.println("FINAL SCORE: \n" + player1 + " = " + points1 + "  " + player2 + " = " + points2);
                         break;
-                    } else if (chooseToContinue.equals("y")) {
+                    } else if (chooseToContinue.equalsIgnoreCase("y")) {
                         wrongCount = 0;
                         city = getRandomWord(in, words);
                         playerGuesses.clear();
                     } else {
                         //invalid input check
-                        while ((!chooseToContinue.equals("n") && !chooseToContinue.equals("y")) || Character.isDigit(chooseToContinue.charAt(0))) {
+                        while ((!chooseToContinue.equalsIgnoreCase("n") && !chooseToContinue.equalsIgnoreCase("y")) || Character.isDigit(chooseToContinue.charAt(0))) {
                             System.out.print("Invalid input(choose y or n): ");
                             playerGuesses.clear();
                             wrongCount = 0;
@@ -96,16 +96,16 @@ public class Hangman {
                 if (players == 2) {
                     System.out.print("would you like another game(y or n): ");
                     chooseToContinue = sc.next();
-                    if (chooseToContinue.equals("n")) {
+                    if (chooseToContinue.equalsIgnoreCase("n")) {
                         System.out.println("FINAL SCORE: \n" + player1 + " = " + points1 + "  " + player2 + " = " + points2);
                         break;
-                    } else if (chooseToContinue.equals("y")) {
+                    } else if (chooseToContinue.equalsIgnoreCase("y")) {
                         wrongCount = 0;
                         city = getRandomWord(in, words);
                         playerGuesses.clear();
                     } else {
                         //invalid input check
-                        while ((!chooseToContinue.equals("n") && !chooseToContinue.equals("y")) || Character.isDigit(chooseToContinue.charAt(0))) {
+                        while ((!chooseToContinue.equalsIgnoreCase("n") && !chooseToContinue.equalsIgnoreCase("y")) || Character.isDigit(chooseToContinue.charAt(0))) {
                             System.out.print("Invalid input(choose y or n): ");
                             chooseToContinue = sc.next();
                             playerGuesses.clear();
