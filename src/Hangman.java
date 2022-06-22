@@ -11,6 +11,14 @@ public class Hangman {
         String city;
         System.out.print("Choose single or multiplayer(1or2): ");
         Scanner sc = new Scanner(System.in);
+
+        while (!sc.hasNext("[12]")) {                               //check for invalid input
+            System.out.print("Invalid input(1-2): ");
+            sc.next();
+        }
+
+
+
         int players = sc.nextInt();
         String player1 = "";
         String player = "";
@@ -34,9 +42,6 @@ public class Hangman {
                 break;
             } else if (players == 1) {
                 break;
-            } else {
-                System.out.print("Invalid input, try again: ");                   //check for 1 or 2 players
-                players = sc.nextInt();
             }
         }
         Scanner in = new Scanner(new File("C:\\Users\\Boom\\Documents\\java\\Hangman\\src\\cities.txt"));//dictionary
@@ -54,18 +59,18 @@ public class Hangman {
                 System.out.println("You lose!");
                 System.out.println("The city was: " + city);
                 if (players == 2) {                                                  //choosing to continue
-                    System.out.print("would you like another game: ");
+                    System.out.print("would you like another game(y or n): ");
                     chooseToContinue = sc.next();
-                    if (chooseToContinue.equalsIgnoreCase("n")) {
+                    if (chooseToContinue.equals("n")) {
                         System.out.println("FINAL SCORE: \n" + player1 + " = " + points1 + "  " + player2 + " = " + points2);
                         break;
-                    } else if (chooseToContinue.equalsIgnoreCase("y")) {
+                    } else if (chooseToContinue.equals("y")) {
                         wrongCount = 0;
                         city = getRandomWord(in, words);
                         playerGuesses.clear();
                     } else {
                         //invalid input check
-                        while ((!chooseToContinue.equalsIgnoreCase("n") && !chooseToContinue.equalsIgnoreCase("y")) || Character.isDigit(chooseToContinue.charAt(0))) {
+                        while ((!chooseToContinue.equals("n") && !chooseToContinue.equals("y")) || Character.isDigit(chooseToContinue.charAt(0))) {
                             System.out.print("Invalid input(choose y or n): ");
                             playerGuesses.clear();
                             wrongCount = 0;
@@ -96,16 +101,16 @@ public class Hangman {
                 if (players == 2) {
                     System.out.print("would you like another game(y or n): ");
                     chooseToContinue = sc.next();
-                    if (chooseToContinue.equalsIgnoreCase("n")) {
+                    if (chooseToContinue.equals("n")) {
                         System.out.println("FINAL SCORE: \n" + player1 + " = " + points1 + "  " + player2 + " = " + points2);
                         break;
-                    } else if (chooseToContinue.equalsIgnoreCase("y")) {
+                    } else if (chooseToContinue.equals("y")) {
                         wrongCount = 0;
                         city = getRandomWord(in, words);
                         playerGuesses.clear();
                     } else {
                         //invalid input check
-                        while ((!chooseToContinue.equalsIgnoreCase("n") && !chooseToContinue.equalsIgnoreCase("y")) || Character.isDigit(chooseToContinue.charAt(0))) {
+                        while ((!chooseToContinue.equals("n") && !chooseToContinue.equals("y")) || Character.isDigit(chooseToContinue.charAt(0))) {
                             System.out.print("Invalid input(choose y or n): ");
                             chooseToContinue = sc.next();
                             playerGuesses.clear();
