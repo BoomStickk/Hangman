@@ -61,7 +61,7 @@ public class Hangman {
 
                     chooseToContinue = sc.next();
                     if (chooseToContinue.equals("n")) {
-                        System.out.println("FINAL SCORE: \n" + player1 + " = " + points1 + "  " + player2 + " = " + points2);
+                        printFinalScore(player1, player2, points1, points2);
                         break;
                     } else if (chooseToContinue.equals("y")) {
                         wrongCount = 0;
@@ -94,7 +94,7 @@ public class Hangman {
                     checkValidInput(sc, "[yn]", "Invalid input(y or n): ");
                     chooseToContinue = sc.next();
                     if (chooseToContinue.equals("n")) {
-                        System.out.println("FINAL SCORE: \n" + player1 + " = " + points1 + "  " + player2 + " = " + points2);
+                        printFinalScore(player1, player2, points1, points2);
                         break;
                     } else if (chooseToContinue.equals("y")) {
                         wrongCount = 0;
@@ -107,6 +107,10 @@ public class Hangman {
                 }
             }
         }
+    }
+
+    private static void printFinalScore(String player1, String player2, int points1, int points2) {
+        System.out.println("FINAL SCORE: \n" + player1 + " = " + points1 + "  " + player2 + " = " + points2);
     }
 
     private static void checkValidInput(Scanner sc, String pattern, String s) {
@@ -129,7 +133,7 @@ public class Hangman {
     private static void printHangManState(int wrongCount) {
 
         if (wrongCount >= 1) {
-            System.out.println("==|==");
+            System.out.println("=====");
             System.out.println("  0");
         }
         if (wrongCount == 2) {
