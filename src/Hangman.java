@@ -12,11 +12,7 @@ public class Hangman {
         System.out.print("Choose single or multiplayer(1or2): ");
         Scanner sc = new Scanner(System.in);
 
-        while (!sc.hasNext("[12]")) {                               //check for invalid input
-            System.out.print("Invalid input(1-2): ");
-            sc.next();
-        }
-
+        checkValidInput(sc, "[12]", "Invalid input(1-2): ");
 
 
         int players = sc.nextInt();
@@ -61,10 +57,7 @@ public class Hangman {
                 if (players == 2) {                                                  //choosing to continue
                     System.out.print("would you like another game(y or n): ");
 
-                    while (!sc.hasNext("[yn]")) {                               //check for invalid input
-                        System.out.print("Invalid input(y or n): ");
-                        sc.next();
-                    }
+                    checkValidInput(sc, "[yn]", "Invalid input(y or n): ");
 
                     chooseToContinue = sc.next();
                     if (chooseToContinue.equals("n")) {
@@ -98,10 +91,7 @@ public class Hangman {
                 }
                 if (players == 2) {
                     System.out.print("would you like another game(y or n): ");
-                    while (!sc.hasNext("[yn]")) {                               //check for invalid input
-                        System.out.print("Invalid input(y or n): ");
-                        sc.next();
-                    }
+                    checkValidInput(sc, "[yn]", "Invalid input(y or n): ");
                     chooseToContinue = sc.next();
                     if (chooseToContinue.equals("n")) {
                         System.out.println("FINAL SCORE: \n" + player1 + " = " + points1 + "  " + player2 + " = " + points2);
@@ -118,6 +108,14 @@ public class Hangman {
             }
         }
     }
+
+    private static void checkValidInput(Scanner sc, String pattern, String s) {
+        while (!sc.hasNext(pattern)) {
+            System.out.print(s);
+            sc.next();
+        }
+    }
+
     private static String getRandomWord(Scanner in, List<String> words) {
         String city;
         while (in.hasNext()) {
@@ -127,6 +125,7 @@ public class Hangman {
         city = words.get(rand.nextInt(words.size()));
         return city;
     }
+
     private static void printHangManState(int wrongCount) {
         if (wrongCount == 1) {
             System.out.println("|-------");
@@ -166,6 +165,7 @@ public class Hangman {
             System.out.println("|");
         }
     }
+
     private static boolean inputPlayerGuess(Scanner keyboard, String word, List<Character> playerGuess, String player) {
         System.out.println("=====================================");
         System.out.print(player + " please enter a letter: ");
@@ -178,6 +178,7 @@ public class Hangman {
         playerGuess.add(letterGuesses.charAt(0));
         return word.contains(letterGuesses);
     }
+
     private static boolean printWordState(String word, List<Character> playerGuess) {
         int correctCount = 0;
         for (int i = 0; i < word.length(); i++) {
