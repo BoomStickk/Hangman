@@ -129,7 +129,7 @@ public class Hangman {
     private static void printHangManState(int wrongCount) {
 
         if (wrongCount >= 1) {
-            System.out.println("=====");
+            System.out.println("==|==");
             System.out.println("  0");
         }
         if (wrongCount == 2) {
