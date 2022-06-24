@@ -20,7 +20,7 @@ public class Hangman {
         String player = "";
         String player2 = "";
 
-
+        while (true) {
             if (players == 2) {                                                 //choosing names
                 System.out.print("Enter player 1 name: ");
                 player1 = sc.next();
@@ -29,20 +29,17 @@ public class Hangman {
                 player = player1;                                              //player 1 starts the game
                 while (true) {
                     if (player2.equals(player1)) {                             //check for same name
-                        System.out.print("Enter another name: ");
+                        System.out.println("Enter another name: ");
                         player2 = sc.next();
                     } else {
                         break;
                     }
-
+                }
+                break;
+            } else if (players == 1) {
+                break;
             }
         }
-
-
-
-
-
-
         Scanner in = new Scanner(new File("C:\\Users\\Boom\\Documents\\java\\Hangman\\src\\cities.txt"));//dictionary
         List<String> words = new ArrayList<>();
         city = getRandomWord(in, words);                                           //picking random word
@@ -52,10 +49,6 @@ public class Hangman {
         int wrongCount = 0;
         int points1 = 0;
         int points2 = 0;
-
-
-
-
         while (true) {
             printHangManState(wrongCount);
             if (wrongCount >= 6) {                                                  //loosing condition
@@ -75,6 +68,9 @@ public class Hangman {
                         city = getRandomWord(in, words);
                         playerGuesses.clear();
                     }
+                }
+                if (players == 1) {
+                    break;
                 }
             }
             //changing players & counting errors
@@ -105,6 +101,9 @@ public class Hangman {
                         city = getRandomWord(in, words);
                         playerGuesses.clear();
                     }
+                }
+                if (players == 1) {
+                    break;
                 }
             }
         }
