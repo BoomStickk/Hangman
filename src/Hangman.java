@@ -11,15 +11,11 @@ public class Hangman {
         String city;
         System.out.print("Choose single or multiplayer(1or2): ");
         Scanner sc = new Scanner(System.in);
-
         checkValidInput(sc, "[12]", "Invalid input(1-2): ");
-
-
         int players = sc.nextInt();
         String player1 = "";
         String player = "";
         String player2 = "";
-
         while (true) {
             if (players == 2) {                                                 //choosing names
                 System.out.print("Enter player 1 name: ");
@@ -131,7 +127,6 @@ public class Hangman {
     }
 
     private static void printHangManState(int wrongCount) {
-
         if (wrongCount >= 1) {
             System.out.println("=====");
             System.out.println("  0");
@@ -155,47 +150,14 @@ public class Hangman {
                 System.out.println();
             }
         }
-//        if (wrongCount == 1) {
-//            System.out.println("|-------");
-//            System.out.println("|    O");
-//            System.out.println("|");
-//            System.out.println("|");
-//            System.out.println("|");
-//        } else if (wrongCount == 2) {
-//            System.out.println("|-------");
-//            System.out.println("|    O");
-//            System.out.println("|    |");
-//            System.out.println("|");
-//            System.out.println("|");
-//        } else if (wrongCount == 3) {
-//            System.out.println("|-------");
-//            System.out.println("|    O");
-//            System.out.println("|   -|");
-//            System.out.println("|");
-//            System.out.println("|");
-//        } else if (wrongCount == 4) {
-//            System.out.println("|-------");
-//            System.out.println("|    O");
-//            System.out.println("|   -|-");
-//            System.out.println("|");
-//            System.out.println("|");
-//        } else if (wrongCount == 5) {
-//            System.out.println("|-------");
-//            System.out.println("|    O");
-//            System.out.println("|   -|-");
-//            System.out.println("|   /");
-//            System.out.println("|");
-//        } else if (wrongCount == 6) {
-//            System.out.println("|-------");
-//            System.out.println("|    O");
-//            System.out.println("|   -|-");
-//            System.out.println("|   / \\");
-//            System.out.println("|");
-//        }
+        switch (wrongCount) {
+            case 1 -> System.out.println("\n");
+            case 2, 3, 4 -> System.out.println();
+        }
     }
 
     private static boolean inputPlayerGuess(Scanner keyboard, String word, List<Character> playerGuess, String player) {
-        System.out.println("=====================================");
+        System.out.println("************************************");
         System.out.print(player + " please enter a letter: ");
         String letterGuesses = keyboard.nextLine();
         //check for valid input
