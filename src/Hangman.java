@@ -17,19 +17,19 @@ public class Hangman {
         String player = "";
         String player2 = "";
 
-            if (players == 2) {                                                 //choosing names
-                System.out.print("Enter player 1 name: ");
-                player1 = sc.next();
-                System.out.print("Enter player 2 name: ");
-                player2 = sc.next();
-                player = player1;                                              //player 1 starts the game
-                while (true) {
-                    if (player2.equals(player1)) {                             //check for same name
-                        System.out.println("Enter another name: ");
-                        player2 = sc.next();
-                    } else {
-                        break;
-                    }
+        if (players == 2) {                                                 //choosing names
+            System.out.print("Enter player 1 name: ");
+            player1 = sc.next();
+            System.out.print("Enter player 2 name: ");
+            player2 = sc.next();
+            player = player1;                                              //player 1 starts the game
+            while (true) {
+                if (player2.equals(player1)) {                             //check for same name
+                    System.out.println("Enter another name: ");
+                    player2 = sc.next();
+                } else {
+                    break;
+                }
 
             }
         }
@@ -53,10 +53,27 @@ public class Hangman {
                 }
             }
             printHangManState(wrongCount);
-            if (wrongCount >= 6) {                                                  //loosing condition
-                System.out.println("You lose!");
-                System.out.println("The city was: " + city);
-                if (players == 2) {
+
+            if (players == 2) {
+                if (wrongCount == 6) {                                                  //loosing condition
+                    System.out.println("You lose!");
+                    System.out.println("The city was: " + city);
+                    chooseToContinue = getChooseToContinue(sc);
+                    if (chooseToContinue.equals("n")) {
+                        printFinalScore(player1, player2, points1, points2);
+                        break;
+                    } else if (chooseToContinue.equals("y")) {
+                        wrongCount = 0;
+                        city = getRandomWord(in, words);
+                        playerGuesses.clear();
+                    }
+                } else if (printWordState(city, playerGuesses)) {                          //winning condition,distributing points
+                    System.out.println(player + " " + "You win!");
+                    if (player.equals(player1)) {
+                        points1++;
+                    } else {
+                        points2++;
+                    }
                     chooseToContinue = getChooseToContinue(sc);
                     if (chooseToContinue.equals("n")) {
                         printFinalScore(player1, player2, points1, points2);
@@ -67,34 +84,21 @@ public class Hangman {
                         playerGuesses.clear();
                     }
                 }
-                if (players == 1) {
+
+
+            } else  {
+                if (wrongCount == 6) {                                                  //loosing condition
+                    System.out.println("You lose!");
+                    System.out.println("The city was: " + city);
                     break;
-                }
-            }
-            if (printWordState(city, playerGuesses)) {                          //winning condition,distributing points
-                System.out.println(player + " " + "You win!");
-                if (player.equals(player1)) {
-                    points1++;
-                } else {
-                    points2++;
-                }
-                if (players == 2) {
-                    chooseToContinue = getChooseToContinue(sc);
-                    if (chooseToContinue.equals("n")) {
-                        printFinalScore(player1, player2, points1, points2);
-                        break;
-                    } else if (chooseToContinue.equals("y")) {
-                        wrongCount = 0;
-                        city = getRandomWord(in, words);
-                        playerGuesses.clear();
-                    }
-                }
-                if (players == 1) {
+                } else if (printWordState(city, playerGuesses)) {                          //winning condition,distributing points
+                    System.out.println(player + " " + "You win!");
                     break;
                 }
             }
         }
     }
+
 
     private static String getChooseToContinue(Scanner sc) {
 
