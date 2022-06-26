@@ -17,26 +17,18 @@ public class Hangman {
         String player = "";
         String player2 = "";
 
-        if (players == 2) {                                                 //choosing names
+        if (players == 2) {                                                        //choosing names
             System.out.print("Enter player 1 name: ");
             player1 = sc.next();
             System.out.print("Enter player 2 name: ");
             player2 = sc.next();
-            player = player1;                                              //player 1 starts the game
-            while (true) {
-                if (player2.equals(player1)) {                             //check for same name
-                    System.out.println("Enter another name: ");
-                    player2 = sc.next();
-                } else {
-                    break;
-                }
-
-            }
+            player = player1;                                                      //player 1 starts the game
+            player2 = checkSameName(sc, player1, player2);
         }
         Scanner in = new Scanner(new File("C:\\Users\\Boom\\Documents\\java\\Hangman\\src\\cities.txt"));//dictionary
         List<String> words = new ArrayList<>();
-        city = getRandomWord(in, words);                                           //picking random word
-        List<Character> playerGuesses = new ArrayList<>();                           //chosen letters
+        city = getRandomWord(in, words);                                           //picking random city
+        List<Character> playerGuesses = new ArrayList<>();                         //chosen letters
         printWordState(city, playerGuesses);
         String chooseToContinue;
         int wrongCount = 0;
@@ -46,34 +38,25 @@ public class Hangman {
             //changing players & counting errors
             if (!inputPlayerGuess(keyboard, city, playerGuesses, player)) {
                 wrongCount++;
-                if (player.equals(player1)) {
-                    player = player2;
-                } else {
-                    player = player1;
-                }
+                player = changePlayerTurn(player1, player, player2);
             }
             printHangManState(wrongCount);
 
             if (players == 2) {
-                if (wrongCount == 6) {                                                  //loosing condition
-                    System.out.println("You lose!");
-                    System.out.println("The city was: " + city);
-                    chooseToContinue = getChooseToContinue(sc);
-                    if (chooseToContinue.equals("n")) {
-                        printFinalScore(player1, player2, points1, points2);
-                        break;
-                    } else if (chooseToContinue.equals("y")) {
-                        wrongCount = 0;
-                        city = getRandomWord(in, words);
-                        playerGuesses.clear();
-                    }
-                } else if (printWordState(city, playerGuesses)) {                          //winning condition,distributing points
+                if (wrongCount == 6) {                                              //loosing condition
+                    printLost("You lose!", "The city was: " + city);
+
+                } else if (printWordState(city, playerGuesses)) {                   //winning condition,distributing points
                     System.out.println(player + " " + "You win!");
                     if (player.equals(player1)) {
                         points1++;
                     } else {
                         points2++;
                     }
+
+                }
+                if (wrongCount == 6 || checkWordState(city, playerGuesses)) {
+
                     chooseToContinue = getChooseToContinue(sc);
                     if (chooseToContinue.equals("n")) {
                         printFinalScore(player1, player2, points1, points2);
@@ -86,10 +69,9 @@ public class Hangman {
                 }
 
 
-            } else  {
+            } else {
                 if (wrongCount == 6) {                                                  //loosing condition
-                    System.out.println("You lose!");
-                    System.out.println("The city was: " + city);
+                    printLost("You lose!", "The city was: " + city);
                     break;
                 } else if (printWordState(city, playerGuesses)) {                          //winning condition,distributing points
                     System.out.println(player + " " + "You win!");
@@ -97,6 +79,33 @@ public class Hangman {
                 }
             }
         }
+    }
+
+    private static void printLost(String x, String city) {
+        System.out.println(x);
+        System.out.println(city);
+    }
+
+    private static String changePlayerTurn(String player1, String player, String player2) {
+        if (player.equals(player1)) {
+            player = player2;
+        } else {
+            player = player1;
+        }
+        return player;
+    }
+
+    private static String checkSameName(Scanner sc, String player1, String player2) {
+        while (true) {
+            if (player2.equals(player1)) {                             //check for same name
+                System.out.print("Enter another name: ");
+                player2 = sc.next();
+            } else {
+                break;
+            }
+
+        }
+        return player2;
     }
 
 
@@ -132,8 +141,7 @@ public class Hangman {
 
     private static void printHangManState(int wrongCount) {
         if (wrongCount >= 1) {
-            System.out.println("=====");
-            System.out.println("  0");
+            printLost("=====", "  0");
         }
         if (wrongCount == 2) {
             System.out.println("  |");
@@ -184,6 +192,16 @@ public class Hangman {
             }
         }
         System.out.println();
+        return (word.length() == correctCount);
+    }
+
+    private static boolean checkWordState(String word, List<Character> playerGuess) {
+        int correctCount = 0;
+        for (int i = 0; i < word.length(); i++) {
+            if (playerGuess.contains(word.charAt(i))) {
+                correctCount++;
+            }
+        }
         return (word.length() == correctCount);
     }
 }
