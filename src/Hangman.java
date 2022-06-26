@@ -16,7 +16,7 @@ public class Hangman {
         String player1 = "";
         String player = "";
         String player2 = "";
-        while (true) {
+
             if (players == 2) {                                                 //choosing names
                 System.out.print("Enter player 1 name: ");
                 player1 = sc.next();
@@ -30,10 +30,7 @@ public class Hangman {
                     } else {
                         break;
                     }
-                }
-                break;
-            } else if (players == 1) {
-                break;
+
             }
         }
         Scanner in = new Scanner(new File("C:\\Users\\Boom\\Documents\\java\\Hangman\\src\\cities.txt"));//dictionary
@@ -46,16 +43,21 @@ public class Hangman {
         int points1 = 0;
         int points2 = 0;
         while (true) {
+            //changing players & counting errors
+            if (!inputPlayerGuess(keyboard, city, playerGuesses, player)) {
+                wrongCount++;
+                if (player.equals(player1)) {
+                    player = player2;
+                } else {
+                    player = player1;
+                }
+            }
             printHangManState(wrongCount);
             if (wrongCount >= 6) {                                                  //loosing condition
                 System.out.println("You lose!");
                 System.out.println("The city was: " + city);
-                if (players == 2) {                                                  //choosing to continue
-                    System.out.print("would you like another game(y or n): ");
-
-                    checkValidInput(sc, "[yn]", "Invalid input(y or n): ");
-
-                    chooseToContinue = sc.next();
+                if (players == 2) {
+                    chooseToContinue = getChooseToContinue(sc);
                     if (chooseToContinue.equals("n")) {
                         printFinalScore(player1, player2, points1, points2);
                         break;
@@ -69,15 +71,6 @@ public class Hangman {
                     break;
                 }
             }
-            //changing players & counting errors
-            if (!inputPlayerGuess(keyboard, city, playerGuesses, player)) {
-                wrongCount++;
-                if (player.equals(player1)) {
-                    player = player2;
-                } else {
-                    player = player1;
-                }
-            }
             if (printWordState(city, playerGuesses)) {                          //winning condition,distributing points
                 System.out.println(player + " " + "You win!");
                 if (player.equals(player1)) {
@@ -86,9 +79,7 @@ public class Hangman {
                     points2++;
                 }
                 if (players == 2) {
-                    System.out.print("would you like another game(y or n): ");
-                    checkValidInput(sc, "[yn]", "Invalid input(y or n): ");
-                    chooseToContinue = sc.next();
+                    chooseToContinue = getChooseToContinue(sc);
                     if (chooseToContinue.equals("n")) {
                         printFinalScore(player1, player2, points1, points2);
                         break;
@@ -103,6 +94,15 @@ public class Hangman {
                 }
             }
         }
+    }
+
+    private static String getChooseToContinue(Scanner sc) {
+
+        System.out.print("would you like another game(y or n): ");
+
+        checkValidInput(sc, "[yn]", "Invalid input(y or n): ");
+
+        return sc.next();
     }
 
     private static void printFinalScore(String player1, String player2, int points1, int points2) {
@@ -179,7 +179,6 @@ public class Hangman {
                 System.out.print("_");
             }
         }
-        System.out.println();
         System.out.println();
         return (word.length() == correctCount);
     }
