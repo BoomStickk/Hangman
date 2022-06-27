@@ -9,19 +9,12 @@ public class Hangman {
     public static void main(String[] args) throws FileNotFoundException {
         Scanner keyboard = new Scanner(System.in);
         String city;
-        System.out.print("Choose single or multiplayer(1or2): ");
         Scanner sc = new Scanner(System.in);
-        checkValidInput(sc, "[12]", "Invalid input(1-2): ");
-        int players = sc.nextInt();
-        String player1 = "";
-        String player = "";
-        String player2 = "";
-
+        int players = choosePlayerMode(sc);
+        String player1 = "", player = "", player2 = "";
         if (players == 2) {                                                        //choosing names
-            System.out.print("Enter player 1 name: ");
-            player1 = sc.next();
-            System.out.print("Enter player 2 name: ");
-            player2 = sc.next();
+            player1 = getPlayerName(sc);
+            player2 = getPlayerName2(sc);
             player = player1;                                                      //player 1 starts the game
             player2 = checkSameName(sc, player1, player2);
         }
@@ -31,17 +24,13 @@ public class Hangman {
         List<Character> playerGuesses = new ArrayList<>();                         //chosen letters
         printWordState(city, playerGuesses);
         String chooseToContinue;
-        int wrongCount = 0;
-        int points1 = 0;
-        int points2 = 0;
+        int wrongCount = 0, points1 = 0, points2 = 0;
         while (true) {
-            //changing players & counting errors
-            if (!inputPlayerGuess(keyboard, city, playerGuesses, player)) {
+            if (!inputPlayerGuess(keyboard, city, playerGuesses, player)) {         //changing players & counting errors
                 wrongCount++;
                 player = changePlayerTurn(player1, player, player2);
             }
             printHangManState(wrongCount);
-
             if (players == 2) {
                 if (wrongCount == 6) {                                              //loosing condition
                     printLost("You lose!", "The city was: " + city);
@@ -53,10 +42,8 @@ public class Hangman {
                     } else {
                         points2++;
                     }
-
                 }
-                if (wrongCount == 6 || checkWordState(city, playerGuesses)) {
-
+                if (wrongCount == 6 || checkWordState(city, playerGuesses)) {       //choosing new game or not
                     chooseToContinue = getChooseToContinue(sc);
                     if (chooseToContinue.equals("n")) {
                         printFinalScore(player1, player2, points1, points2);
@@ -67,18 +54,36 @@ public class Hangman {
                         playerGuesses.clear();
                     }
                 }
-
-
             } else {
-                if (wrongCount == 6) {                                                  //loosing condition
+                if (wrongCount == 6) {                                               //loosing condition
                     printLost("You lose!", "The city was: " + city);
                     break;
-                } else if (printWordState(city, playerGuesses)) {                          //winning condition,distributing points
+                } else if (printWordState(city, playerGuesses)) {
                     System.out.println(player + " " + "You win!");
                     break;
                 }
             }
         }
+    }
+
+    private static String getPlayerName2(Scanner sc) {
+        String player2;
+        System.out.print("Enter player 2 name: ");
+        player2 = sc.next();
+        return player2;
+    }
+
+    private static String getPlayerName(Scanner sc) {
+        String player1;
+        System.out.print("Enter player 1 name: ");
+        player1 = sc.next();
+        return player1;
+    }
+
+    private static int choosePlayerMode(Scanner sc) {
+        System.out.print("Choose single or multiplayer(1or2): ");
+        checkValidInput(sc, "[12]", "Invalid input(1-2): ");
+        return sc.nextInt();
     }
 
     private static void printLost(String x, String city) {
@@ -97,7 +102,7 @@ public class Hangman {
 
     private static String checkSameName(Scanner sc, String player1, String player2) {
         while (true) {
-            if (player2.equals(player1)) {                             //check for same name
+            if (player2.equals(player1)) {                                            //check for same name
                 System.out.print("Enter another name: ");
                 player2 = sc.next();
             } else {
@@ -107,7 +112,6 @@ public class Hangman {
         }
         return player2;
     }
-
 
     private static String getChooseToContinue(Scanner sc) {
 
